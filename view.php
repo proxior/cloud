@@ -214,10 +214,18 @@ $user = $_POST['user'];
 $latitude = $_POST['latitude'];
 $longitude = $_POST['longitude'];
 
+$instant = date ('d-m-Y H:i:s');
+
+$instant2 = date ('dmYHis');
+
+$radial_tracking = "150 meters";
 
 $address = "Here";
 
-$all_info = "{ lat: " . $latitude . ", " . "lng: " . $longitude . ", " . "info: " . "''" . "Device Fingerprint: " . $device_id  . " <br> " . "Address: " . $address . "''" . " }"; 
+$all_info = "{ lat: " . $latitude . ", " . "lng: " . $longitude . ", " . "info: " . "''" . "Device Fingerprint: " . $device_id  . " <br> " ."Activation moment: " . $instant . " <br> " . "Radial Tracking: " . $radial_tracking . " <br> "  ."Address: " . $address . "''" . " }"; 
+
+
+$all_info2 = "$instant2: {center: {lat: $latitude, lng: $longitude},population: 150 }";
 
 
        $time_of_renewal = 1;
@@ -226,11 +234,11 @@ $all_info = "{ lat: " . $latitude . ", " . "lng: " . $longitude . ", " . "info: 
        if (!empty($admin . $$latitude . $longitude))
              {
 
-       $sql_norm_dev = "insert into prox_devices(user,device_id, last_ip, latitude, longitude, address, fingerprint, all_info) values ('$user','$device_id','$last_ip','$latitude','$longitude','$address','$user_finger','$all_info')";
+       $sql_norm_dev = "insert into prox_devices(user,device_id, last_ip, latitude, longitude, address, fingerprint, all_info, all_info2) values ('$user','$device_id','$last_ip','$latitude','$longitude','$address','$user_finger','$all_info','$all_info2')";
 
 
 
-       $sql_back_dev = "insert into prox_backup_devices(user,device_id, last_ip, latitude, longitude, address, fingerprint, all_info) values ('$user','$device_id','$last_ip','$latitude','$longitude','$address','$user_finger','$all_info')";
+       $sql_back_dev = "insert into prox_backup_devices(user,device_id, last_ip, latitude, longitude, address, fingerprint, all_info,all_info2) values ('$user','$device_id','$last_ip','$latitude','$longitude','$address','$user_finger','$all_info','$all_info2')";
 
        $result_norm_dev = $conn->query($sql_norm_dev);
        $result_back_dev = $conn->query($sql_back_dev);

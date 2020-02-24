@@ -299,12 +299,28 @@ countdown( "countdown", 15, 0 );
 
         <!-- Sidebar Navidation Menus--> <!-- <span class="heading"> MENU </span> -->
         <ul class="list-unstyled">
-          <li class="active"><a href="desktop.php"> <i class="fa fa-desktop"></i></i> Desktop </a></li>
+          <li><a href="desktop.php"> <i class="fa fa-desktop"></i></i> Desktop </a></li>
           <li><a href="server.php"> <i class="fa fa-server"></i> Server </a></li>
           <li><a href="ui_panel.php"> <i class="fa fa-window-restore"></i> UI Panel </a></li>
           <li><a href="router.php"> <i class="fa fa-fax"></i> Router </a></li>
           <li><a href="commands.php"> <i class="fa fa-terminal"></i> Commands </a></li>
-   <li class="active"><a href="remote_access.php"> <i class="fa fa-connectdevelop"></i> Remote Access </a></li>
+
+           <li>
+
+            <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> 
+              <i class="fa fa-connectdevelop"></i> Remote Access 
+            </a>
+              <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
+               <li class="active"> 
+                <a href="remote_access.php"> <i class="fa fa-map-marker"></i> Device Locations </a>
+              </li>
+              <li> 
+                <a href="remote_access2.php"> <i class="fa fa-map-pin"></i> Devices Radius </a>
+            </li>
+            </ul>
+
+          </li>
+
         </ul>
 
        <!-- <span class="heading">Extras</span> -->
@@ -409,15 +425,13 @@ function initMap() {
     mapTypeId: 'hybrid',
     zoom: 3,
     center: {
-      lat: 10.000,
-      lng: 10.000,
+      lat: 32.000,
+      lng: 32.000,
     }
   });
+
   var infoWin = new google.maps.InfoWindow();
-  // Add some markers to the map.
-  // Note: The code uses the JavaScript Array.prototype.map() method to
-  // create an array of markers based on a given 'locations' array.
-  // The map() method here has nothing to do with the Google Maps API.
+
   var markers = locations.map(function(location, i) {
     var marker = new google.maps.Marker({
       position: location
@@ -436,6 +450,7 @@ function initMap() {
   });
 
 }
+
 
 var locations = [{$all_info},];
 

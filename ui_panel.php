@@ -242,7 +242,21 @@ countdown( "countdown", 15, 0 );
           <li class="active"><a href="ui_panel.php"> <i class="fa fa-window-restore"></i> UI Panel </a></li>
           <li><a href="router.php"> <i class="fa fa-fax"></i> Router </a></li>
           <li><a href="commands.php"> <i class="fa fa-terminal"></i> Commands </a></li>
-          <li><a href="remote_access.php"> <i class="fa fa-connectdevelop"></i> Remote Access </a></li>
+
+           <li>
+            <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> 
+              <i class="fa fa-connectdevelop"></i> Remote Access 
+            </a>
+              <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
+               <li> 
+                <a href="remote_access.php"> <i class="fa fa-map-marker"></i> Device Locations </a>
+              </li>
+              <li> 
+                <a href="remote_access2.php"> <i class="fa fa-map-pin"></i> Devices Radius </a>
+            </li>
+            </ul>
+          </li>
+
         </ul>
         <ul class="list-unstyled">
           <li> <a href="settings.php"> <i class="icon-settings"></i> Settings </a></li>

@@ -82,18 +82,12 @@ else
    $sql = "insert into prox_log_file (username,ip_addr,path,connect) 
            values('$ses_login','$ip_addr','$path',NOW())";
 
-   $sql2 = "insert into prox_users_activities
-            (username,fingerprint,ip_addr,os,browser,log_in_time,log_out_time) 
-            values('$ses_login','$user_finger','$ip_addr','$os_user','$browser_user',NOW(),'')";
-
-
    $result = $conn->query($sql);  
-   $result2 = $conn->query($sql2);  
 
 
 } // end of else connection
 
-$conn->close();
+//$conn->close();
 
 } // end else session
 
@@ -103,6 +97,7 @@ $conn->close();
 <!DOCTYPE html>
 <html>
   <head> 
+       <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -132,6 +127,67 @@ $conn->close();
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+
+
+<style>
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    text-align: center;
+    color:white;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    text-align: center; color:white;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ but I'm not sure about working */
+   text-align: center; color:white;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+   text-align: center;color:white;
+}
+
+
+input 
+{
+text-align: center;
+}
+
+input[type="text"]
+{
+height: 2em;
+font-size:24px;
+}
+
+
+#map 
+{
+height: 80%;
+}
+  
+
+
+}
+
+</style>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function(){    
+    loadstation();
+});
+
+function loadstation(){
+    $("#station_data").load("remote_access.php");
+    setTimeout(loadstation, 1000);
+}
+</script>
+
+
+
+
+
 </head>
 
 <body>
@@ -146,7 +202,7 @@ $conn->close();
           <div class="navbar-header">
             <!-- Navbar Header--><a href="desktop.php" class="navbar-brand">
               <div class="brand-text brand-big visible text-uppercase">
-              <strong class="text-primary"> Proxior </strong></div>
+                <strong class="text-primary"> Proxior </strong></div>
               <div class="brand-text brand-sm"><strong class="text-primary">Proxior</strong></div></a>
             <!-- Sidebar Toggle Btn-->
             <button class="sidebar-toggle"><i class="fa fa-long-arrow-left"></i></button>
@@ -249,29 +305,19 @@ countdown( "countdown", 15, 0 );
           <li><a href="router.php"> <i class="fa fa-fax"></i> Router </a></li>
           <li><a href="commands.php"> <i class="fa fa-terminal"></i> Commands </a></li>
 
-          <li>
+           <li>
 
             <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> 
               <i class="fa fa-connectdevelop"></i> Remote Access 
             </a>
               <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-               <li> 
+                <li> 
                 <a href="remote_access.php"> <i class="fa fa-map-marker"></i> Device Locations </a>
               </li>
-              <li> 
+              <li class="active"> 
                 <a href="remote_access2.php"> <i class="fa fa-map-pin"></i> Devices Radius </a>
             </li>
             </ul>
-
-          </li>
-
-            <!--
-            <a href="remote_access.php"> <i class="fa fa-connectdevelop"></i> Remote Access </a>
-             <ul> 
-              <a href="remote_access.php"> <i class="fa fa-connectdevelop"></i> Remote Access </a>
-              <a href="remote_access2.php"> <i class="fa fa-connectdevelop"></i> Remote Access </a>
-             </ul>
-               -->
 
           </li>
 
@@ -288,160 +334,142 @@ countdown( "countdown", 15, 0 );
 
 
 
+
+     
       <div class="page-content">
        <!-- Page Header-->
         <div class="page-header">
           <div class="container-fluid">
-            <h2 class="h5 no-margin-bottom"> Desktop </h2>
+            <h2 class="h5 no-margin-bottom"> Remote Access </h2>
+
           </div>
         </div>
 
-        <section class="no-padding-top no-padding-bottom">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-3 col-sm-6">
-                <div class="statistic-block block">
-                  <div class="progress-details d-flex align-items-end justify-content-between">
-                    <div class="title">
-                      <div class="icon">
-                        <i class="fa fa-object-ungroup"></i>
-                        <i class="fa fa-copy"></i>
-                      </div><strong> Clone Methods </strong>
-                    </div>
-                    <div class="number dashtext-1">2</div>
-                  </div>
-                  <div class="progress progress-template">
-                    <div role="progressbar" style="width: 100%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-1"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="statistic-block block">
-                  <div class="progress-details d-flex align-items-end justify-content-between">
-                    <div class="title">
-                  <div class="icon">
-                     <i class="fa fa-tv"></i>
-                     <i class="fa fa-desktop"></i> 
-                     <i class="fa fa-laptop"></i>
-                     <i class="fa fa-tablet"></i>
-                     <i class="fa fa-mobile"></i>
-                    </div><strong> Attack Methods </strong>
-                    </div>
-                    <div class="number dashtext-2">3</div>
-                  </div>
-                  <div class="progress progress-template">
-                    <div role="progressbar" style="width: 100%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-2"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="statistic-block block">
-                  <div class="progress-details d-flex align-items-end justify-content-between">
-                    <div class="title">
-                   <div class="icon">
-                     <i class="fa fa-battery-half"></i>
-                     <i class="fa fa-globe"></i>
-                     <i class="fa fa-wifi"></i>
-                     <i class="fa fa-bluetooth"></i>
-                     </div><strong> Campatible Devices </strong>
-                    </div>
-                    <div class="number dashtext-3">7</div>
-                  </div>
-                  <div class="progress progress-template">
-                    <div role="progressbar" style="width: 100%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-3"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="statistic-block block">
-                  <div class="progress-details d-flex align-items-end justify-content-between">
-                    <div class="title">
-                      <div class="icon">
-                        <i class="fa fa-microchip"></i>
-                        <i class="fa fa-server"></i>
-                      </div><strong> OS Systems </strong>
-                    </div>
-                    <div class="number dashtext-4">3</div>
-                  </div>
-                  <div class="progress progress-template">
-                    <div role="progressbar" style="width: 100%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-4"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section class="no-padding-bottom">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-lg-4">
-                <div class="bar-chart block no-margin-bottom">
-                  <canvas id="barChartExample1"></canvas>
-                </div>
-                <div class="bar-chart block">
-                  <canvas id="barChartExample2"></canvas>
-                </div>
-              </div>
-              <div class="col-lg-8">
-                <div class="line-cahrt block">
-                  <canvas id="lineCahrt"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+<?php           
+
+session_start();
+        
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require('__DEV__/function.php');
+//require('__ROOT__/class_cn.php');
 
 
-        <section class="no-padding-bottom">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-lg-4">
-                <div class="user-block block text-center">
-                  <div class="avatar"><img src="img/dns.png" alt="..." class="img-fluid">
-                    <div class="order dashbg-2">1st</div>
-                  </div><a class="user-title">
-                    <h3 class="h5">Dns Spoof</h3><span>Spoofing and poisoning DNS</span></a>
-                  <div class="contributions"> 7 Campatible Devices </div>
-                  <div class="details d-flex">
-                    <div class="item"><i class="icon-info"></i><strong>Yes</strong></div>
-                    <div class="item"><i class="fa fa-gg"></i><strong>Yes</strong></div>
-                    <div class="item"><i class="icon-flow-branch"></i><strong>Yes</strong></div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="user-block block text-center">
-                  <div class="avatar"><img src="img/gm.png" alt="..." class="img-fluid">
-                    <div class="order dashbg-1">2nd</div>
-                  </div><a href="#" class="user-title">
-                    <h3 class="h5">Email phishing</h3><span>Ngrok Link or IP</span></a>
-                  <div class="contributions">1 Default Dettings </div>
-                  <div class="details d-flex">
-                    <div class="item"><i class="icon-info"></i><strong>Yes</strong></div>
-                    <div class="item"><i class="fa fa-gg"></i><strong>Yes</strong></div>
-                    <div class="item"><i class="icon-flow-branch"></i><strong>Yes</strong></div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="user-block block text-center">
-                  <div class="avatar"><img src="img/os.jpg" alt="..." class="img-fluid">
-                    <div class="order dashbg-4">3rd</div>
-                  </div><a href="#" class="user-title">
-                    <h3 class="h5">OS Systems</h3><span>Gnu/linux systems</span></a>
-                  <div class="contributions">3 / Kali-Ubuntu-Mint</div>
-                  <div class="details d-flex">
-                    <div class="item"><i class="icon-info"></i><strong>Yes</strong></div>
-                    <div class="item"><i class="fa fa-gg"></i><strong>Yes</strong></div>
-                    <div class="item"><i class="icon-flow-branch"></i><strong>Yes</strong></div>
-                  </div>
-                </div>
-              </div>
+ $obj = new security;
+ 
+  $host=$obj->connect[0];
+  $user=$obj->connect[1];
+  $pass=$obj->connect[2];
+  $db=$obj->connect[3];
+  
+  $conn = new mysqli($host,$user,$pass,$db);
+  
+  if($conn->connect_error)
+     {
+     die ("Cannot connect to server " .$conn->connect_error);
+       }
 
-            </div>
-          </div>
-        </section>
 
+else
+  {
+
+$ses_login = $_SESSION['login'];
+
+
+$sql_locations = "SELECT GROUP_CONCAT(CONCAT(all_info2))
+                   AS 'combined_all_info2'
+                   FROM prox_devices where user = '$ses_login'"; 
+
+
+$result_locations = $conn->query($sql_locations); 
+
+//$result->error;
+
+
+echo'<div id="map"></div>';
+        
+
+while ($row_locations = $result_locations->fetch_array(MYSQLI_NUM))
+           {
+
+         $all_info2 = $row_locations[0];
+
+        // echo $all_info;
+         //echo"<br>";
+
+         // View locations in map save to 9 locations
+         // For view multiple locations 
+        // INSERT into phpmyadmin from administrator account
+        // go to home and go to variables tab
+       // insert end find group_concat_max_len
+       // press edit and change value
+       //SET variables group_concat_max_len = 1000000;
+
+
+//$all_info = htmlspecialchars($all_info);
+
+
+
+//echo $all_info2;
+
+
+echo"<script>
+      // This example creates circles on the map, representing populations in North
+      // America.
+
+      // First, create an object containing LatLng and population for each city.
+      var citymap = {{$all_info2},};
+
+
+
+      function initMap() {
+        // Create the map.
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 6,
+          center: {lat:38.000, lng: 25.000},
+          mapTypeId: 'hybrid'
+        });
+
+        
+        for (var city in citymap) {
+          // Add the circle for this city to the map.
+          var cityCircle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 8,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            center: citymap[city].center,
+            radius: Math.sqrt(citymap[city].population) * 15
+          });
+        }
+      }
+    </script>";
+
+  } // end of while devices locations
+
+
+ } // end of else connect
+
+
+
+// $conn->close();
+
+?>
+
+
+      
+
+
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+
+      <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=initMap"></script>
+
+
+     
        <footer class="footer">
           <div class="footer__block block no-margin-bottom">
             <div class="container-fluid text-center">
@@ -454,15 +482,17 @@ countdown( "countdown", 15, 0 );
       </div>
     </div>
 
-
     <!-- JavaScript files-->
+
+
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/popper.js/umd/popper.min.js"> </script>
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
     <script src="vendor/chart.js/Chart.min.js"></script>
     <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
-    <script src="js/charts-home.js"></script>
+    <script src="js/charts-custom.js"></script>
     <script src="js/front.js"></script>
+
   </body>
 </html>
