@@ -19,7 +19,6 @@
 *
 */
 
-
 session_start();
 
 if (!isset($_SESSION['login']))
@@ -28,17 +27,83 @@ if (!isset($_SESSION['login']))
       }
 
 
-?>
+//$idletime=898;//after 15 minutes the user gets logged out
 
+
+//if (time()-$_SESSION['timestamp']>$idletime)
+ //  {
+    
+    // }
+
+
+else
+{
+
+ $_SESSION['timestamp']=time();
+
+
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+
+require('__ROOT__/class_cn.php');
+require('browser_user.php');
+require('os_user.php');
+
+ $obj = new security;
+ 
+ $host=$obj->connect[0];
+ $user=$obj->connect[1];
+ $pass=$obj->connect[2];
+ $db=$obj->connect[3];
+
+$conn = new mysqli($host,$user,$pass,$db);
+
+  if($conn->connect_error)
+     {
+     die ("Cannot connect to server " .$conn->connect_error);
+       }
+
+else
+  {
+
+   $ses_login = $_SESSION['login'];
+
+   $user_finger =  $_SESSION['fingerprint'];
+
+   $ip_addr = $_SERVER['REMOTE_ADDR'];
+   $path = $_SERVER['REQUEST_URI']; 
+
+   $os_user = $os; 
+   $browser_user = $yourbrowser;
+
+   $date_now = date("Y-m-d H:i:s"); 
+
+   $sql = "insert into prox_log_file (username,ip_addr,path,connect) 
+           values('$ses_login','$ip_addr','$path',NOW())";
+
+   $result = $conn->query($sql);  
+
+
+} // end of else connection
+
+//$conn->close();
+
+} // end else session
+
+?>
 
 
 <!DOCTYPE html>
 <html>
   <head> 
+       <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <title> Proxior </title>
+
+    <meta HTTP-EQUIV="REFRESH" content="900; url=logout.php">
 
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -64,34 +129,71 @@ if (!isset($_SESSION['login']))
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 
 
+
 <style>
 
-@media (min-width: 768px) {
-    .form-inline .form-control {
-        width: 280px;
-    }
+::-webkit-input-placeholder { /* WebKit browsers */
+    text-align: center;
+    color:white;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    text-align: center; color:white;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ but I'm not sure about working */
+   text-align: center; color:white;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+   text-align: center;color:white;
 }
 
 
-table {
-  display: inline-block;;
-  height: 200px;
-  width: 100%;
-  overflow-y: scroll;
+input 
+{
+text-align: center;
 }
 
+input[type="text"]
+{
+height: 2em;
+font-size:24px;
+}
+
+
+#map 
+{
+height: 80%;
+}
+  
+
+
+}
 
 </style>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function(){    
+    loadstation();
+});
+
+function loadstation(){
+    $("#station_data").load("remote_access.php");
+    setTimeout(loadstation, 1000);
+}
+</script>
+
+
 
 
 
 </head>
 
-
 <body>
 
 
-   <header class="header">   
+    <header class="header">   
       <nav class="navbar navbar-expand-lg">
         <div class="search-panel">
         </div>
@@ -99,7 +201,8 @@ table {
 
           <div class="navbar-header">
             <!-- Navbar Header--><a href="desktop.php" class="navbar-brand">
-              <div class="brand-text brand-big visible text-uppercase"><strong class="text-primary"> Prxorior </strong></div>
+              <div class="brand-text brand-big visible text-uppercase">
+                <strong class="text-primary"> Proxior </strong></div>
               <div class="brand-text brand-sm"><strong class="text-primary">Proxior</strong></div></a>
             <!-- Sidebar Toggle Btn-->
             <button class="sidebar-toggle"><i class="fa fa-long-arrow-left"></i></button>
@@ -108,8 +211,8 @@ table {
 
           <div class="right-menu list-inline no-margin-bottom">    
     
-
-             <?php 
+          
+       <?php 
          echo 'Auto logout in  <span id="countdown"></span>'; 
        ?>
 
@@ -146,7 +249,6 @@ function countdown( elementName, minutes, seconds )
 
 countdown( "countdown", 15, 0 );
 </script>
-           
 
 
 
@@ -155,11 +257,12 @@ countdown( "countdown", 15, 0 );
             <div class="list-inline-item dropdown menu-large"><a href="#" data-toggle="dropdown" class="nav-link"> Operations <i class="fa fa-ellipsis-v"></i></a>
               <div class="dropdown-menu megamenu">
                 <div class="row">
-                 
+
                 </div>
                 
                 
-                <div class="row megamenu-buttons text-center">
+                
+               <div class="row megamenu-buttons text-center">
                 
                 
                   <div class="col-lg-2 col-md-4">
@@ -242,114 +345,208 @@ countdown( "countdown", 15, 0 );
 
         <!-- Sidebar Navidation Menus--> <!-- <span class="heading"> MENU </span> -->
         <ul class="list-unstyled">
-          <li><a href="desktop.php"> <i class="fa fa-desktop"></i></i> Desktop </a></li>
+          <li class="active"><a href="desktop.php"> <i class="fa fa-desktop"></i></i> Desktop </a></li>
           <li><a href="server.php"> <i class="fa fa-server"></i> Server </a></li>
+          <li><a href="clone.php"> <i class="fa fa-clone"></i> Cloning </a></li>
           <li><a href="ui_panel.php"> <i class="fa fa-window-restore"></i> UI Panel </a></li>
-          <li><a href="router.php"> <i class="fa fa-fax"></i> Router </a></li>
-          <li class="active"><a href="commands.php"> <i class="fa fa-terminal"></i> Commands </a></li>
-          <li><a href="remote_access.php"> <i class="fa fa-connectdevelop"></i> Remote Access </a></li>
+          <li><a href="commands.php"> <i class="fa fa-terminal"></i> Commands </a></li>
+
+           <li>
+
+            <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> 
+              <i class="fa fa-connectdevelop"></i> Remote Access 
+            </a>
+
+              <ul id="exampledropdownDropdown" class="collapse list-unstyled">
+
+              <li> 
+                <a href="re_acc_map_locations.php"> <i class="fa fa-map-marker"></i> Device Locations </a>
+              </li>
+
+              <li class="active"> 
+                <a href="re_acc_map_radius.php"> <i class="fa fa-map-pin"></i> Device Radius </a>
+            </li>
+
+            <li> 
+                <a href="re_acc_sms_spoof.php"> <i class="fa fa-comment"></i> Sms Spoof </a>
+            </li>
+
+            </ul>
+
+          </li>
+
         </ul>
 
        <!-- <span class="heading">Extras</span> -->
         <ul class="list-unstyled">
-          <li> <a href="#"> <i class="icon-settings"></i>Demo </a></li>
+          <li> <a href="settings.php"> <i class="icon-settings"></i> Settings </a></li>
         </ul>
       </nav>
       <!-- Sidebar Navigation end-->
 
 
 
-      <!-- Sidebar Navigation end-->
+
+
+
+     
       <div class="page-content">
-        <!-- Page Header-->
-        <div class="page-header no-margin-bottom">
+       <!-- Page Header-->
+        <div class="page-header">
           <div class="container-fluid">
-            <h2 class="h5 no-margin-bottom"> Commands </h2>
+            <h2 class="h5 no-margin-bottom"> Device Radius </h2>
+
           </div>
         </div>
 
+<?php   
 
-        <!-- Breadcrumb-->
-        <div class="container-fluid">
-          <ul class="breadcrumb">
-          </ul>
+session_start();
+        
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-    <?php
+require('__DEV__/function.php');
+//require('__ROOT__/class_cn.php');
 
-       $protocol = $_SERVER['SERVER_PORT'];
 
-     if ($protocol == '443')
-        {
-       $protocol = 'https://';
+ $obj = new security;
+ 
+  $host=$obj->connect[0];
+  $user=$obj->connect[1];
+  $pass=$obj->connect[2];
+  $db=$obj->connect[3];
+  
+  $conn = new mysqli($host,$user,$pass,$db);
+  
+  if($conn->connect_error)
+     {
+     die ("Cannot connect to server " .$conn->connect_error);
+       }
+
+
+else
+  {
+
+$ses_login = $_SESSION['login'];
+
+
+$sql_locations = "SELECT GROUP_CONCAT(CONCAT(all_info2))
+                   AS 'combined_all_info2'
+                   FROM prox_devices where user = '$ses_login'"; 
+
+
+$result_locations = $conn->query($sql_locations); 
+
+//$result->error;
+
+
+echo'<div id="map"></div>';
+        
+
+while ($row_locations = $result_locations->fetch_array(MYSQLI_NUM))
+           {
+
+         $all_info2 = $row_locations[0];
+
+        // echo $all_info;
+         //echo"<br>";
+
+         // View locations in map save to 9 locations
+         // For view multiple locations 
+        // INSERT into phpmyadmin from administrator account
+        // go to home and go to variables tab
+       // insert end find group_concat_max_len
+       // press edit and change value
+       //SET variables group_concat_max_len = 1000000;
+
+
+//$all_info = htmlspecialchars($all_info);
+
+
+
+//echo $all_info2;
+
+
+echo"<script>
+      // This example creates circles on the map, representing populations in North
+      // America.
+
+      // First, create an object containing LatLng and population for each city.
+      var citymap = {{$all_info2},};
+
+
+
+      function initMap() {
+        // Create the map.
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 6,
+          center: {lat:38.000, lng: 25.000},
+          mapTypeId: 'hybrid'
+        });
+
+        
+        for (var city in citymap) {
+          // Add the circle for this city to the map.
+          var cityCircle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 8,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            center: citymap[city].center,
+            radius: Math.sqrt(citymap[city].population) * 15
+          });
         }
+      }
+    </script>";
 
-else if ($protocol == '80')
-         {
-         $protocol = 'http://';
-         }
-
-
-$url = $_SERVER['SERVER_NAME'];
-
-$admin = $_SESSION['login'];
-
-$link_url = $protocol .$url ."/cloud/view.php?=$admin"; 
-$link_url = str_replace(" ","",$link_url);
-
-          echo "<div class='col-md-12'>
-                   <div class='card'>
-                        <p></p>
-                       <h4 class='title' align='center'> 
-                         <i class='fa fa-link'></i> Links for find the location 
-                       </h4>
-                         <br>
-
-                  <p align='center'>
-                     <i class='fa fa-external-link'></i>
-                     Link on url: &nbsp;
-                     <a href='' id='a' onclick='copy(this)'> $link_url </a>
-                  </p>
-
-             </div>
-           </div>";
-            
-            ?>
-
-        </div>
+  } // end of while devices locations
 
 
-        <section class="no-padding-top">
-          <div class="container-fluid">
-            <div class="row">
+ } // end of else connect
 
 
-             <div class='col-lg-12'>
-               <div class='block'>
-                <div class='title'>
-                  <strong> Block Commands from phone devices &nbsp; <i class='fa fa-terminal'></i> </strong>
-                </div>
 
-            </div>
-          </div>
-        </section>
-        <footer class="footer">
+// $conn->close();
+
+?>
+
+
+      
+
+
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+
+      <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=initMap"></script>
+
+
+     
+       <footer class="footer">
           <div class="footer__block block no-margin-bottom">
             <div class="container-fluid text-center">
-
               <p class="no-margin-bottom"> Proxior </p>
-
             </div>
           </div>
         </footer>
+
+
       </div>
     </div>
+
     <!-- JavaScript files-->
+
+
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/popper.js/umd/popper.min.js"> </script>
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
     <script src="vendor/chart.js/Chart.min.js"></script>
     <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+    <script src="js/charts-custom.js"></script>
     <script src="js/front.js"></script>
+
   </body>
 </html>

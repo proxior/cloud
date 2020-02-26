@@ -19,17 +19,54 @@
 *
 */
 
-
 session_start();
 
 if (!isset($_SESSION['login']))
     {
       header("Location: index.php");
       }
+else
+{
 
+require('__ROOT__/class_cn.php');
+
+ $obj = new security;
+ 
+ $host=$obj->connect[0];
+ $user=$obj->connect[1];
+ $pass=$obj->connect[2];
+ $db=$obj->connect[3];
+
+$conn = new mysqli($host,$user,$pass,$db);
+
+  if($conn->connect_error)
+     {
+     die ("Cannot connect to server " .$conn->connect_error);
+       }
+
+else
+  {
+
+   $ses_login = $_SESSION['login'];
+
+   $ip_addr = $_SERVER['REMOTE_ADDR'];
+   $path = $_SERVER['REQUEST_URI']; 
+
+   $date_now = date("Y-m-d H:i:s"); 
+
+   $sql = "insert into prox_log_file (username,ip_addr,path,connect) 
+           values('$ses_login','$ip_addr','$path',NOW())";
+
+   $result = $conn->query($sql);  
+
+
+} // end of else connection
+
+$conn->close();
+
+} // end else session
 
 ?>
-
 
 
 <!DOCTYPE html>
@@ -39,6 +76,8 @@ if (!isset($_SESSION['login']))
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <title> Proxior </title>
+
+    <meta HTTP-EQUIV="REFRESH" content="900; url=logout.php">
 
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -64,20 +103,19 @@ if (!isset($_SESSION['login']))
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 
 
+
+
 <style>
 
-@media (min-width: 768px) {
-    .form-inline .form-control {
-        width: 280px;
-    }
+input 
+{
+text-align: center;
 }
 
-
-table {
-  display: inline-block;;
-  height: 200px;
-  width: 100%;
-  overflow-y: scroll;
+input[type="text"]
+{
+height: 2em;
+font-size:26px;
 }
 
 
@@ -99,17 +137,17 @@ table {
 
           <div class="navbar-header">
             <!-- Navbar Header--><a href="desktop.php" class="navbar-brand">
-              <div class="brand-text brand-big visible text-uppercase"><strong class="text-primary"> Prxorior </strong></div>
+              <div class="brand-text brand-big visible text-uppercase">
+               <strong class="text-primary"> Proxior </strong></div>
               <div class="brand-text brand-sm"><strong class="text-primary">Proxior</strong></div></a>
             <!-- Sidebar Toggle Btn-->
             <button class="sidebar-toggle"><i class="fa fa-long-arrow-left"></i></button>
           </div>
 
+          <div class="right-menu list-inline no-margin-bottom">   
 
-          <div class="right-menu list-inline no-margin-bottom">    
-    
 
-             <?php 
+           <?php 
          echo 'Auto logout in  <span id="countdown"></span>'; 
        ?>
 
@@ -146,11 +184,9 @@ function countdown( elementName, minutes, seconds )
 
 countdown( "countdown", 15, 0 );
 </script>
-           
 
-
-
-            <!-- Tasks end-->
+ 
+               <!-- Tasks end-->
             <!-- Megamenu-->
             <div class="list-inline-item dropdown menu-large"><a href="#" data-toggle="dropdown" class="nav-link"> Operations <i class="fa fa-ellipsis-v"></i></a>
               <div class="dropdown-menu megamenu">
@@ -216,7 +252,6 @@ countdown( "countdown", 15, 0 );
             <!-- Megamenu end -->  
 
 
-
             <!-- Log out               -->
             <div class="list-inline-item logout"><a id="logout" href="logout.php" class="nav-link"> <span class="d-none d-sm-inline"> Logout </span><i class="icon-logout"></i></a></div>
           </div>
@@ -226,7 +261,7 @@ countdown( "countdown", 15, 0 );
 
 
 
-    <div class="d-flex align-items-stretch">
+      <div class="d-flex align-items-stretch">
       <!-- Sidebar Navigation-->
       <nav id="sidebar">
         <!-- Sidebar Header-->
@@ -238,83 +273,58 @@ countdown( "countdown", 15, 0 );
           </div>
         </div>
 
+        <!-- Sidebar Navidation Menus--> <!-- <span class="heading">Main</span> -->
 
-
-        <!-- Sidebar Navidation Menus--> <!-- <span class="heading"> MENU </span> -->
         <ul class="list-unstyled">
           <li><a href="desktop.php"> <i class="fa fa-desktop"></i></i> Desktop </a></li>
           <li><a href="server.php"> <i class="fa fa-server"></i> Server </a></li>
+          <li class="active"><a href="clone.php"> <i class="fa fa-clone"></i> Cloning </a></li>
           <li><a href="ui_panel.php"> <i class="fa fa-window-restore"></i> UI Panel </a></li>
-          <li><a href="router.php"> <i class="fa fa-fax"></i> Router </a></li>
-          <li class="active"><a href="commands.php"> <i class="fa fa-terminal"></i> Commands </a></li>
-          <li><a href="remote_access.php"> <i class="fa fa-connectdevelop"></i> Remote Access </a></li>
-        </ul>
+          <li><a href="commands.php"> <i class="fa fa-terminal"></i> Commands </a></li>
 
-       <!-- <span class="heading">Extras</span> -->
+           <li>
+            <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> 
+              <i class="fa fa-connectdevelop"></i> Remote Access 
+            </a>
+
+              <ul id="exampledropdownDropdown" class="collapse list-unstyled">
+
+               <li> 
+                <a href="re_acc_map_locations.php"> <i class="fa fa-map-marker"></i> Device Locations </a>
+              </li>
+
+              <li> 
+                <a href="re_acc_map_radius.php"> <i class="fa fa-map-pin"></i> Device Radius </a>
+            </li>
+
+            <li class="active"> 
+                <a href="re_acc_sms_spoof.php"> <i class="fa fa-comment"></i> Sms Spoof </a>
+            </li>
+
+
+            </ul>
+          </li>
+
+        </ul>
         <ul class="list-unstyled">
-          <li> <a href="#"> <i class="icon-settings"></i>Demo </a></li>
+          <li> <a href="settings.php"> <i class="icon-settings"></i> Settings </a></li>
         </ul>
       </nav>
       <!-- Sidebar Navigation end-->
 
 
-
-      <!-- Sidebar Navigation end-->
       <div class="page-content">
         <!-- Page Header-->
         <div class="page-header no-margin-bottom">
           <div class="container-fluid">
-            <h2 class="h5 no-margin-bottom"> Commands </h2>
+            <h2 class="h5 no-margin-bottom"> Sms Spoof </h2>
           </div>
         </div>
-
 
         <!-- Breadcrumb-->
         <div class="container-fluid">
           <ul class="breadcrumb">
           </ul>
-
-    <?php
-
-       $protocol = $_SERVER['SERVER_PORT'];
-
-     if ($protocol == '443')
-        {
-       $protocol = 'https://';
-        }
-
-else if ($protocol == '80')
-         {
-         $protocol = 'http://';
-         }
-
-
-$url = $_SERVER['SERVER_NAME'];
-
-$admin = $_SESSION['login'];
-
-$link_url = $protocol .$url ."/cloud/view.php?=$admin"; 
-$link_url = str_replace(" ","",$link_url);
-
-          echo "<div class='col-md-12'>
-                   <div class='card'>
-                        <p></p>
-                       <h4 class='title' align='center'> 
-                         <i class='fa fa-link'></i> Links for find the location 
-                       </h4>
-                         <br>
-
-                  <p align='center'>
-                     <i class='fa fa-external-link'></i>
-                     Link on url: &nbsp;
-                     <a href='' id='a' onclick='copy(this)'> $link_url </a>
-                  </p>
-
-             </div>
-           </div>";
-            
-            ?>
-
         </div>
 
 
@@ -322,27 +332,28 @@ $link_url = str_replace(" ","",$link_url);
           <div class="container-fluid">
             <div class="row">
 
+            <iframe src="__TMP__/smsspoof/index.php" width="100%" height="600px" frameborder="0"> 
+             </iframe>
 
-             <div class='col-lg-12'>
-               <div class='block'>
-                <div class='title'>
-                  <strong> Block Commands from phone devices &nbsp; <i class='fa fa-terminal'></i> </strong>
-                </div>
 
             </div>
           </div>
         </section>
+
+
         <footer class="footer">
           <div class="footer__block block no-margin-bottom">
             <div class="container-fluid text-center">
-
               <p class="no-margin-bottom"> Proxior </p>
-
             </div>
           </div>
         </footer>
+
+
       </div>
     </div>
+
+
     <!-- JavaScript files-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/popper.js/umd/popper.min.js"> </script>

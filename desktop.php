@@ -103,6 +103,7 @@ $conn->close();
 <!DOCTYPE html>
 <html>
   <head> 
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -200,18 +201,62 @@ countdown( "countdown", 15, 0 );
             <!-- Megamenu-->
             <div class="list-inline-item dropdown menu-large"><a href="#" data-toggle="dropdown" class="nav-link"> Operations <i class="fa fa-ellipsis-v"></i></a>
               <div class="dropdown-menu megamenu">
-                <div class="row">
-                 
-                 
-                 
+                <div class="row">             
+               
                 </div>
+                
+                
                 <div class="row megamenu-buttons text-center">
-                  <div class="col-lg-2 col-md-4"><a href="#" class="d-block megamenu-button-link dashbg-1"><i class="fa fa-clock-o"></i><strong> Demo 1 </strong></a></div>
-                  <div class="col-lg-2 col-md-4"><a href="#" class="d-block megamenu-button-link dashbg-2"><i class="fa fa-clock-o"></i><strong>Demo 2</strong></a></div>
-                  <div class="col-lg-2 col-md-4"><a href="#" class="d-block megamenu-button-link dashbg-3"><i class="fa fa-clock-o"></i><strong>Demo 3</strong></a></div>
-                  <div class="col-lg-2 col-md-4"><a href="#" class="d-block megamenu-button-link dashbg-4"><i class="fa fa-clock-o"></i><strong>Demo 4</strong></a></div>
-                  <div class="col-lg-2 col-md-4"><a href="#" class="d-block megamenu-button-link bg-danger"><i class="fa fa-clock-o"></i><strong>Demo 5</strong></a></div>
-                  <div class="col-lg-2 col-md-4"><a href="#" class="d-block megamenu-button-link bg-info"><i class="fa fa-clock-o"></i><strong>Demo 6</strong></a></div>
+                
+                
+                  <div class="col-lg-2 col-md-4">
+                    <a href="operations/install_linux.html" target="_blank" class="d-block megamenu-button-link dashbg-1">
+                     <i class="fa fa-linux"></i>
+                     <strong> Install Linux </strong>
+                    </a>
+                  </div>
+                  
+                  
+                  <div class="col-lg-2 col-md-4">
+                    <a href="#" target="_blank" class="d-block megamenu-button-link dashbg-2">
+                     <i class="fa fa-windows"></i>
+                     <strong> Install Windows </strong>
+                    </a>
+                  </div>
+                  
+                  
+                  <div class="col-lg-2 col-md-4">
+                    <a href="operations/install_android.html" target="_blank" class="d-block megamenu-button-link dashbg-3">
+                     <i class="fa fa-android"></i>
+                     <strong> Install Android </strong>
+                    </a>
+                  </div>
+                  
+                  
+                  <div class="col-lg-2 col-md-4">
+                    <a href="#" target="_blank" class="d-block megamenu-button-link dashbg-4">
+                     <i class="fa fa-clock-o"></i>
+                     <strong>Demo 4</strong>
+                    </a>
+                  </div>
+                  
+                  
+                  <div class="col-lg-2 col-md-4">
+                    <a href="#" target="_blank" class="d-block megamenu-button-link bg-danger">
+                     <i class="fa fa-clock-o"></i>
+                     <strong>Demo 5</strong>
+                    </a>
+                  </div>
+                  
+                  
+                  <div class="col-lg-2 col-md-4">
+                    <a href="#" target="_blank" class="d-block megamenu-button-link bg-info">
+                     <i class="fa fa-clock-o"></i>
+                     <strong>Demo 6</strong>
+                    </a>
+                  </div>
+                  
+                  
                 </div>
               </div>
             </div>
@@ -245,8 +290,8 @@ countdown( "countdown", 15, 0 );
         <ul class="list-unstyled">
           <li class="active"><a href="desktop.php"> <i class="fa fa-desktop"></i></i> Desktop </a></li>
           <li><a href="server.php"> <i class="fa fa-server"></i> Server </a></li>
+          <li><a href="clone.php"> <i class="fa fa-clone"></i> Cloning </a></li>
           <li><a href="ui_panel.php"> <i class="fa fa-window-restore"></i> UI Panel </a></li>
-          <li><a href="router.php"> <i class="fa fa-fax"></i> Router </a></li>
           <li><a href="commands.php"> <i class="fa fa-terminal"></i> Commands </a></li>
 
           <li>
@@ -254,13 +299,21 @@ countdown( "countdown", 15, 0 );
             <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> 
               <i class="fa fa-connectdevelop"></i> Remote Access 
             </a>
-              <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
+
+              <ul id="exampledropdownDropdown" class="collapse list-unstyled">
+
                <li> 
-                <a href="remote_access.php"> <i class="fa fa-map-marker"></i> Device Locations </a>
+                <a href="re_acc_map_locations.php"> <i class="fa fa-map-marker"></i> Device Locations </a>
               </li>
+
               <li> 
-                <a href="remote_access2.php"> <i class="fa fa-map-pin"></i> Devices Radius </a>
+                <a href="re_acc_map_radius.php"> <i class="fa fa-map-pin"></i> Device Radius </a>
             </li>
+
+            <li> 
+                <a href="re_acc_sms_spoof.php"> <i class="fa fa-comment"></i> Sms Spoof </a>
+            </li>
+ 
             </ul>
 
           </li>
