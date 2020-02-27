@@ -376,6 +376,9 @@ countdown( "countdown", 15, 0 );
                       </font>                      
                         <br>
                     </div>";
+
+                    session_unset();
+                    session_destroy();
                       exit;
                        }
 
