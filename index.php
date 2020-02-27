@@ -171,7 +171,8 @@ $password = $conn->real_escape_string($password);
 
 
   $sql ="select username,password,email,verify from prox_login 
-         where binary username='$username' and password='$password' and verify='yes'";
+         where binary username='$username' and password='$password'  
+         and verification_code='ok' and verify='yes'";
   $result=$conn->query($sql);
   $rows = $result->num_rows;
 
@@ -225,10 +226,10 @@ $password = $conn->real_escape_string($password);
 
 
 
-while ($row=$result->fetch_assoc())
-       {
-   $_SESSION['mail']=$row['email'];
-         }
+  while ($row=$result->fetch_assoc())
+         {
+          $_SESSION['mail'] = $row['email'];
+          }
 
 
       $rand = 64;

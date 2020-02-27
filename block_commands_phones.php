@@ -28,6 +28,11 @@ if (!isset($_SESSION['login']))
       }
 
 
+require('__ROOT__/class_cn.php');
+require('access_level.php');
+
+define("PROXIOR_PAGE_LEVEL", "2");
+
 ?>
 
 
@@ -108,6 +113,45 @@ table {
 
           <div class="right-menu list-inline no-margin-bottom">    
     
+
+<!-- GTranslate: https://gtranslate.io/ -->
+<a href="#" onclick="doGTranslate('en|en');return false;" title="English" class="gflag nturl" style="background-position:-0px -0px;"><img src="//gtranslate.net/flags/blank.png" height="24" width="24" alt="English" /></a> 
+<a href="#" onclick="doGTranslate('en|el');return false;" title="Greek" class="gflag nturl" style="background-position:-400px -100px;"><img src="//gtranslate.net/flags/blank.png" height="24" width="24" alt="Greek" /></a>
+<a href="#" onclick="doGTranslate('en|fr');return false;" title="French" class="gflag nturl" style="background-position:-200px -100px;"><img src="//gtranslate.net/flags/blank.png" height="24" width="24" alt="French" /></a>
+<a href="#" onclick="doGTranslate('en|de');return false;" title="German" class="gflag nturl" style="background-position:-300px -100px;"><img src="//gtranslate.net/flags/blank.png" height="24" width="24" alt="German" /></a>
+<a href="#" onclick="doGTranslate('en|it');return false;" title="Italian" class="gflag nturl" style="background-position:-600px -100px;"><img src="//gtranslate.net/flags/blank.png" height="24" width="24" alt="Italian" /></a>
+<a href="#" onclick="doGTranslate('en|es');return false;" title="Spanish" class="gflag nturl" style="background-position:-600px -200px;"><img src="//gtranslate.net/flags/blank.png" height="24" width="24" alt="Spanish" /></a>
+<a href="#" onclick="doGTranslate('en|pt');return false;" title="Portuguese" class="gflag nturl" style="background-position:-300px -200px;"><img src="//gtranslate.net/flags/blank.png" height="24" width="24" alt="Portuguese" /></a>
+<a href="#" onclick="doGTranslate('en|ru');return false;" title="Russian" class="gflag nturl" style="background-position:-500px -200px;"><img src="//gtranslate.net/flags/blank.png" height="24" width="24" alt="Russian" /></a>
+
+
+<style>
+a.gflag {vertical-align:middle;font-size:16px;padding:0px 0;background-repeat:no-repeat;background-image:url(//gtranslate.net/flags/24.png);}
+a.gflag img {border:0;}
+a.gflag:hover {background-image:url(//gtranslate.net/flags/24a.png);}
+#goog-gt-tt {display:none !important;}
+.goog-te-banner-frame {display:none !important;}
+.goog-te-menu-value:hover {text-decoration:none !important;}
+body {top:0 !important;}
+#google_translate_element2 {display:none!important;}
+</style>
+
+
+<div id="google_translate_element2"></div>
+<script type="text/javascript">
+function googleTranslateElementInit2() {new google.translate.TranslateElement({pageLanguage: 'en',autoDisplay: false}, 'google_translate_element2');}
+</script><script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"></script>
+
+
+<script type="text/javascript">
+/* <![CDATA[ */
+eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)r[e(c)]=k[c]||e(c);k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('6 7(a,b){n{4(2.9){3 c=2.9("o");c.p(b,f,f);a.q(c)}g{3 c=2.r();a.s(\'t\'+b,c)}}u(e){}}6 h(a){4(a.8)a=a.8;4(a==\'\')v;3 b=a.w(\'|\')[1];3 c;3 d=2.x(\'y\');z(3 i=0;i<d.5;i++)4(d[i].A==\'B-C-D\')c=d[i];4(2.j(\'k\')==E||2.j(\'k\').l.5==0||c.5==0||c.l.5==0){F(6(){h(a)},G)}g{c.8=b;7(c,\'m\');7(c,\'m\')}}',43,43,'||document|var|if|length|function|GTranslateFireEvent|value|createEvent||||||true|else|doGTranslate||getElementById|google_translate_element2|innerHTML|change|try|HTMLEvents|initEvent|dispatchEvent|createEventObject|fireEvent|on|catch|return|split|getElementsByTagName|select|for|className|goog|te|combo|null|setTimeout|500'.split('|'),0,{}))
+/* ]]> */
+</script>
+
+
+    &nbsp; &nbsp;
+
 
              <?php 
          echo 'Auto logout in  <span id="countdown"></span>'; 
@@ -226,6 +270,90 @@ countdown( "countdown", 15, 0 );
 
 
 
+     
+         <?php
+
+       if (PROXIOR_PAGE_LEVEL > $access_level_num)
+           {
+          
+           require('browser_user.php');
+           require('os_user.php');
+
+            $ses_log_err = $_SESSION['login'];
+            $ses_mail_err = $_SESSION['mail'];
+            $ses_fing_err =  $_SESSION['fingerprint'];
+            $acc_lev_err = $access_level;
+            $deny_lev_err = 'Level ' .PROXIOR_PAGE_LEVEL;
+            $ip_addr = $_SERVER['REMOTE_ADDR'];
+            $os_err = $os; 
+            $browser_err = $yourbrowser;
+
+            $conn = new mysqli($host,$user,$pass,$db);
+
+          $sql_err = "insert into prox_deny_level (user,email,access_level,error_level,
+                                                   ip_addr,os,browser,fingerprint)
+                      values('$ses_log_err','$ses_mail_err','$acc_lev_err','$deny_lev_err',
+                             '$ip_addr','$os_err','$browser_err','$ses_fing_err')";
+
+
+         $sql_sus = "update prox_login set verification_code = 'errno', verify = 'suspended' 
+              where username='$ses_log_err' and email='$ses_mail_err'";
+
+
+        $result_err = $conn->query($sql_err);
+        $result_sus = $conn->query($sql_sus);
+
+
+        $conn->close();
+
+       echo" <div class='col-lg-12' align='center' style='height:auto; width=100%; background-color:black;'>
+                        <br>
+
+                         <br>
+                   
+                     <font color='white'>
+                      <h2>  
+                    Your Level is <font color='yellow'> Level $access_level_num </font> 
+                    </h2> 
+                     <h2>  Access to this service is denied at this level </h2> 
+                       <i class='fa fa-universal-access fa-5x'></i> 
+                       </font> <br><br>
+
+                         <font color='white'>
+                           <h2> This level only can be accessed at: </h2> 
+                           <h3> 1) Educational institutions </h3>
+                           <h3> 2) Government services (eg law enforcement services) </h3>
+
+                                 <br>                     
+
+                      <font color='red'> <h2> Caution </h2> </font>  
+                      <font color='red'> <h2> <i class='fa fa-exclamation-triangle fa-5x'></i> </h2> </font>
+
+                          <font color='red'>
+                            <h2> Your account has been suspended for security reasons. </h2>
+                          </font>
+
+                       <font color='red'>
+                        <h2>
+                 Do not try to enter this level again because there is a serious risk of criminal penalties. 
+                        </h2>    
+                          </font>
+
+                      </font>                      
+                        <br>
+                    </div>";
+
+                    session_unset();
+                    session_destroy();
+                      exit;
+
+                       }
+
+             ?> 
+
+
+
+
     <div class="d-flex align-items-stretch">
       <!-- Sidebar Navigation-->
       <nav id="sidebar">
@@ -240,22 +368,128 @@ countdown( "countdown", 15, 0 );
 
 
 
-        <!-- Sidebar Navidation Menus--> <!-- <span class="heading"> MENU </span> -->
+
+ <!-- Sidebar Navidation Menus--> <!-- <span class="heading"> MENU </span> -->
+
+        <?php 
+            
+ 
+            // Access for level 1
+           if ($access_level == 'Level 1' )            
+               {
+
+          echo'
+            <span class="heading"> 
+              <font color="#babcaa"> Access Level: </font>
+              <font color="yellow"> '.$access_level.' </font>
+           </span> 
         <ul class="list-unstyled">
           <li><a href="desktop.php"> <i class="fa fa-desktop"></i></i> Desktop </a></li>
           <li><a href="server.php"> <i class="fa fa-server"></i> Server </a></li>
+          <li><a href="clone.php"> <i class="fa fa-clone"></i> Cloning </a></li>
           <li><a href="ui_panel.php"> <i class="fa fa-window-restore"></i> UI Panel </a></li>
-          <li><a href="router.php"> <i class="fa fa-fax"></i> Router </a></li>
-          <li class="active"><a href="commands.php"> <i class="fa fa-terminal"></i> Commands </a></li>
-          <li><a href="remote_access.php"> <i class="fa fa-connectdevelop"></i> Remote Access </a></li>
         </ul>
 
        <!-- <span class="heading">Extras</span> -->
         <ul class="list-unstyled">
-          <li> <a href="#"> <i class="icon-settings"></i>Demo </a></li>
+          <li> <a href="settings.php"> <i class="icon-settings"></i> Settings </a></li>
         </ul>
-      </nav>
+      </nav> ';
+
+         } // end access level 1
+
+
+
+
+
+        // Access for level 2
+        if ($access_level == 'Level 2' )            
+               {
+
+          echo'
+            <span class="heading"> 
+              <font color="#babcaa"> Access Level: </font>
+              <font color="orange"> '.$access_level.' </font>
+           </span> 
+        <ul class="list-unstyled">
+          <li><a href="desktop.php"> <i class="fa fa-desktop"></i></i> Desktop </a></li>
+          <li><a href="server.php"> <i class="fa fa-server"></i> Server </a></li>
+          <li><a href="clone.php"> <i class="fa fa-clone"></i> Cloning </a></li>
+          <li><a href="ui_panel.php"> <i class="fa fa-window-restore"></i> UI Panel </a></li>
+          <li class="active"><a href="commands.php"> <i class="fa fa-terminal"></i> Commands </a></li>
+        </ul>
+
+       <!-- <span class="heading">Extras</span> -->
+        <ul class="list-unstyled">
+          <li> <a href="settings.php"> <i class="icon-settings"></i> Settings </a></li>
+        </ul>
+      </nav> ';
+
+         } // end access level 2
+
+
+
+
+
+        // Access for level 3
+        if ($access_level == 'Level 3' )            
+            {
+
+          echo'
+            <span class="heading"> 
+              <font color="#babcaa"> Access Level: </font>
+              <font color="green"> '.$access_level.' </font>
+           </span> 
+        <ul class="list-unstyled">
+          <li><a href="desktop.php"> <i class="fa fa-desktop"></i></i> Desktop </a></li>
+          <li><a href="server.php"> <i class="fa fa-server"></i> Server </a></li>
+          <li><a href="clone.php"> <i class="fa fa-clone"></i> Cloning </a></li>
+          <li><a href="ui_panel.php"> <i class="fa fa-window-restore"></i> UI Panel </a></li>
+          <li class="active"><a href="commands.php"> <i class="fa fa-terminal"></i> Commands </a></li>
+
+          <li>
+
+            <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> 
+              <i class="fa fa-connectdevelop"></i> Remote Access 
+            </a>
+
+              <ul id="exampledropdownDropdown" class="collapse list-unstyled">
+
+               <li> 
+                <a href="re_acc_map_locations.php"> <i class="fa fa-map-marker"></i> Device Locations </a>
+              </li>
+
+              <li> 
+                <a href="re_acc_map_radius.php"> <i class="fa fa-map-pin"></i> Device Radius </a>
+            </li>
+
+            <li> 
+                <a href="re_acc_sms_spoof.php"> <i class="fa fa-comment"></i> Sms Spoof </a>
+            </li>
+ 
+            </ul>
+
+          </li>
+
+
+          </li>
+
+        </ul>
+
+       <!-- <span class="heading">Extras</span> -->
+        <ul class="list-unstyled">
+          <li> <a href="settings.php"> <i class="icon-settings"></i> Settings </a></li>
+        </ul>
+      </nav> ';
+
+         } // end access level 3
+
+
+         ?>
+ 
       <!-- Sidebar Navigation end-->
+
+
 
 
 
