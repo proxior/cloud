@@ -609,7 +609,7 @@ countdown( "countdown", 15, 0 );
 
                <div class='form-group' style="width:100%;">
                   <select class="form-control" id="sel" data-width="100%" name="prox_firewall" disabled>
-                   <option selected disabled> &#9636; Access Level: Level 1  
+                   <option selected disabled> &#9636; Access Level: <?php echo $access_level; ?>  
                   </option>
                  </select>
                 </div> 
