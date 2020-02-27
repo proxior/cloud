@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 24, 2020 at 02:01 AM
+-- Generation Time: Feb 28, 2020 at 01:48 AM
 -- Server version: 5.5.62-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.29
 
@@ -23,6 +23,21 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `prox_access_level`
+--
+
+CREATE TABLE IF NOT EXISTS `prox_access_level` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `user` varchar(16) NOT NULL,
+  `email` varchar(70) NOT NULL,
+  `access_level` varchar(8) NOT NULL,
+  `access_level_num` varchar(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `prox_backup_data`
 --
 
@@ -33,9 +48,8 @@ CREATE TABLE IF NOT EXISTS `prox_backup_data` (
   `email` varchar(50) NOT NULL,
   `mac_addr` varchar(24) NOT NULL,
   `ip_addr` varchar(24) NOT NULL,
-  `all_info` varchar(512) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 -- --------------------------------------------------------
 
@@ -54,9 +68,10 @@ CREATE TABLE IF NOT EXISTS `prox_backup_devices` (
   `address` varchar(128) NOT NULL,
   `fingerprint` varchar(32) NOT NULL,
   `all_info` varchar(256) NOT NULL,
+  `all_info2` varchar(512) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `fingerprint` (`fingerprint`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=365 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=988 ;
 
 -- --------------------------------------------------------
 
@@ -71,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `prox_backup_login` (
   `password` varchar(32) NOT NULL,
   `email` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 -- --------------------------------------------------------
 
@@ -86,9 +101,29 @@ CREATE TABLE IF NOT EXISTS `prox_data` (
   `email` varchar(50) NOT NULL,
   `mac_addr` varchar(24) NOT NULL,
   `ip_addr` varchar(24) NOT NULL,
-  `all_info` varchar(512) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=43 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `prox_deny_level`
+--
+
+CREATE TABLE IF NOT EXISTS `prox_deny_level` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `instant` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `user` varchar(16) NOT NULL,
+  `email` varchar(32) NOT NULL,
+  `access_level` varchar(8) NOT NULL,
+  `error_level` varchar(8) NOT NULL,
+  `ip_addr` varchar(31) NOT NULL,
+  `os` varchar(16) NOT NULL,
+  `browser` varchar(128) NOT NULL,
+  `fingerprint` varchar(32) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `fingerprint` (`fingerprint`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 -- --------------------------------------------------------
 
@@ -107,9 +142,10 @@ CREATE TABLE IF NOT EXISTS `prox_devices` (
   `address` varchar(128) NOT NULL,
   `fingerprint` varchar(32) NOT NULL,
   `all_info` varchar(256) NOT NULL,
+  `all_info2` varchar(512) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `fingerprint` (`fingerprint`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=365 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1000 ;
 
 -- --------------------------------------------------------
 
@@ -139,9 +175,9 @@ CREATE TABLE IF NOT EXISTS `prox_login` (
   `email` varchar(50) NOT NULL,
   `forgot_text` varchar(32) NOT NULL,
   `verification_code` varchar(5) NOT NULL,
-  `verify` varchar(4) NOT NULL,
+  `verify` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 -- --------------------------------------------------------
 
@@ -157,7 +193,7 @@ CREATE TABLE IF NOT EXISTS `prox_login_error_attempts` (
   `username` varchar(32) NOT NULL,
   `password` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=27 ;
 
 -- --------------------------------------------------------
 
@@ -173,7 +209,7 @@ CREATE TABLE IF NOT EXISTS `prox_log_file` (
   `connect` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1140 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4019 ;
 
 -- --------------------------------------------------------
 
@@ -192,7 +228,7 @@ CREATE TABLE IF NOT EXISTS `prox_users_activities` (
   `log_out_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `fingerprint` (`fingerprint`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=140 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=428 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
