@@ -398,6 +398,58 @@ countdown( "countdown", 15, 0 );
           echo'
             <span class="heading"> 
               <font color="#babcaa"> Access Level: </font>
+              <font color="brown"> '.$access_level.' </font>
+           </span> 
+        <ul class="list-unstyled">
+          <li><a href="desktop.php"> <i class="fa fa-desktop"></i></i> Desktop </a></li>
+          <li><a href="server.php"> <i class="fa fa-server"></i> Server </a></li>
+          <li><a href="clone.php"> <i class="fa fa-clone"></i> Cloning </a></li>
+          <li class="active"><a href="ui_panel.php"> <i class="fa fa-window-restore"></i> UI Panel </a></li>
+          <li><a href="commands.php"> <i class="fa fa-terminal"></i> Commands </a></li>
+
+          <li>
+
+            <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> 
+              <i class="fa fa-connectdevelop"></i> Remote Access 
+            </a>
+
+              <ul id="exampledropdownDropdown" class="collapse list-unstyled">
+
+               <li> 
+                <a href="re_acc_map_locations.php"> <i class="fa fa-map-marker"></i> Device Locations </a>
+              </li>
+
+              <li> 
+                <a href="re_acc_map_radius.php"> <i class="fa fa-map-pin"></i> Device Radius </a>
+            </li>
+ 
+            </ul>
+
+          </li>
+
+
+          </li>
+
+        </ul>
+
+       <!-- <span class="heading">Extras</span> -->
+        <ul class="list-unstyled">
+          <li> <a href="settings.php"> <i class="icon-settings"></i> Settings </a></li>
+        </ul>
+      </nav> ';
+
+         } // end access level 3
+         
+         
+         
+         
+        // Access for level 4
+        if ($access_level == 'Level 4' )            
+            {
+
+          echo'
+            <span class="heading"> 
+              <font color="#babcaa"> Access Level: </font>
               <font color="green"> '.$access_level.' </font>
            </span> 
         <ul class="list-unstyled">
@@ -442,7 +494,7 @@ countdown( "countdown", 15, 0 );
         </ul>
       </nav> ';
 
-         } // end access level 3
+         } // end access level 4
 
 
 
@@ -474,7 +526,7 @@ countdown( "countdown", 15, 0 );
             <div class="row">
       
 
-           <iframe src="http://192.168.2.211/UI" width="100%" height="600px" frameborder="0"> 
+           <iframe src="http://192.168.2.30/UI" width="100%" height="600px" frameborder="0"> 
            </iframe>
 
 

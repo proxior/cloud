@@ -216,19 +216,63 @@ $result2=$conn->query($sql2);
 
    $rand_qr = 5;
    $qrcode  = substr(str_shuffle("0123456789"),0, $rand_qr);
-             
+            
 
-$sql3 = "INSERT INTO prox_login (username,password,email,verification_code) VALUES ('$username','$password','$email','$qrcode')";
+  $eLength = strlen($email) - 1;
+  $local = substr($email, $eLength - 3, $eLength );
+
+
+ 
+   if ($local == '.edu')
+       {
+        $email_type = "education";
+        $access_level = "Level 2";  
+        $access_level_num = "2";
+        }
+
+
+    if ($local == '.gov')
+       {
+        $email_type = "government";
+        $access_level = "Level 3"; 
+        $access_level_num = "3";
+        }
+        
+        
+        
+    if ($local == 'army')
+      {
+       $email_type = "military";
+       $access_level = "Level 4";  
+       $access_level_num = "4";
+       }    
+
+
+   if ($local != '.edu' and $local != '.gov' and $local != 'army')
+       {
+       $email_type = "normal";
+       $access_level = "Level 1"; 
+       $access_level_num = "1";
+        }
+
+
+
+$sql3 = "INSERT INTO prox_login (username,password,email,email_type,verification_code) VALUES ('$username','$password','$email','$email_type','$qrcode')";
 $result3=$conn->query($sql3);
 
 if (($result3) === TRUE) 
       {
  
       // back up account
-     $sql4="insert into prox_backup_login (username,password,email) values ('$username','$password','$email')";
+     $sql4="insert into prox_backup_login (username,password,email,email_type) values ('$username','$password','$email','$email_type')";
      $result4=$conn->query($sql4);
 
- 
+
+      // access level
+     $sql5="insert into prox_access_level (user,email,email_type,access_level,access_level_num) values ('$username','$email','$email_type','$access_level','$access_level_num')";
+     $result5=$conn->query($sql5); 
+
+
        //insert api key  
     // $api_key_user="12DEAA2209001287AB00EDFA9902111C";
      //$length_sec_key = 32;
