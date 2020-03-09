@@ -54,7 +54,20 @@ else
          where username='$ses_login' and fingerprint='$user_finger'";
 
   $result = $conn->query($sql);
+ 
 
+ if (isset($_SESSION['key']))
+     {
+
+    $rand_key = 6;
+    $rand_keyw  = substr(str_shuffle("0123456789"),0, $rand_key);
+
+    $keyword = $ses_login.$rand_keyw;
+
+    $sql3="update prox_login set keyword = '$keyword' where username = '$ses_login'";
+    $result3=$conn->query($sql3); 
+
+     } // end if isset session key (font one connection) 
 
 session_unset();
 session_destroy();

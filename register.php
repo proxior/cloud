@@ -99,11 +99,11 @@ session_start();
                     </div>
 
                     <div class="form-group-material">
-
             <input id="register-password" type="password" name="password" required data-msg="Please enter your password" class="input-material">
 
                       <label for="register-password" class="label-material">Password        </label>
                     </div>
+
                     <div class="form-group terms-conditions text-center">
                       <input id="register-agree" name="agree" type="checkbox" required value="true" data-msg="Your agreement is required" class="checkbox-template">
                       <label for="register-agree">I agree with the terms and policy</label>
@@ -111,7 +111,10 @@ session_start();
                     <div class="form-group text-center">
                       <input id="register" type="submit" name="submit" value="Register" class="btn btn-primary btn-block">
                     </div>
-                  </form><small>Already have an account? </small><a href="index.php" class="signup">Login</a>
+                  </form>
+
+<small>Already have an account? </small><a href="index.php" class="signup">Login</a>
+
                 </div>
               </div>
             </div>
@@ -213,6 +216,10 @@ $result2=$conn->query($sql2);
    else
     {
 
+    $rand_key = 6;
+    $rand_keyw  = substr(str_shuffle("0123456789"),0, $rand_key);
+
+    $keyword = $username.$rand_keyw;
 
    $rand_qr = 5;
    $qrcode  = substr(str_shuffle("0123456789"),0, $rand_qr);
@@ -257,14 +264,14 @@ $result2=$conn->query($sql2);
 
 
 
-$sql3 = "INSERT INTO prox_login (username,password,email,email_type,verification_code) VALUES ('$username','$password','$email','$email_type','$qrcode')";
+$sql3 = "INSERT INTO prox_login (username,password,email,keyword,email_type,verification_code) VALUES ('$username','$password','$email','$keyword','$email_type','$qrcode')";
 $result3=$conn->query($sql3);
 
 if (($result3) === TRUE) 
       {
  
       // back up account
-     $sql4="insert into prox_backup_login (username,password,email,email_type) values ('$username','$password','$email','$email_type')";
+     $sql4="insert into prox_backup_login (username,password,email,keyword,email_type) values ('$username','$password','$email','$keyword','$email_type')";
      $result4=$conn->query($sql4);
 
 

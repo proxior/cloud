@@ -85,28 +85,17 @@ session_start();
 
                   <h1> Proxior </h1>
                   <p> Lan and Wifi Interception </p>
+                  <p> Connection Disposable </p>
 
-                  <form action="" method="post" class="form-validate mb-4">
+            <form action="" method="post" class="form-validate mb-4">
                     <div class="form-group">
-                      <input id="login-username" type="text" name="username" required data-msg="Please enter your username" class="input-material">
-                      <label for="login-username" class="label-material">User Name</label>
+                      <input id="login-password" type="password" name="key" required data-msg="Please enter your key" class="input-material">
+                      <label for="login-password" class="label-material"> Your key </label>
                     </div>
-                    <div class="form-group">
-                      <input id="login-password" type="password" name="password" required data-msg="Please enter your password" class="input-material">
-                      <label for="login-password" class="label-material">Password</label>
-                    </div>
-
-         <button type="submit" name="submit" class="btn btn-primary btn-block"> Login </button>
-
+         <button type="submit" name="submit_key" class="btn btn-primary btn-block"> Login </button>
                   </form>
 
- <!-- <a href="#" class="forgot-pass">Forgot Password?</a><br> -->
-
-
-
-<small>Do not have an account? </small><a href="register.php" class="signup"> Register </a> <br>
-
-<small> One Connection </small><a href="one_connection.php" class="signup"> One Connection </a>
+<small>Already have an account? </small><a href="index.php" class="signup">Login</a>
 
                 </div>
               </div>
@@ -134,7 +123,7 @@ session_start();
 
 <?php
 
-if (isset($_POST['submit']))
+if (isset($_POST['submit_key']))
    {
 
 require('__ROOT__/class_cn.php');
@@ -157,9 +146,9 @@ $conn = new mysqli($host,$user,$pass,$db);
  else
    {
  
-   if(empty($_POST['username'] || $_POST['password']))
+   if(empty($_POST['key']))
      {
-     echo '<script type="text/javascript">alert("This fields are requireds");
+     echo '<script type="text/javascript">alert("This fields is required");
          </script>';
      echo ("<script>location.href='index.php'</script>");
       }
@@ -167,18 +156,13 @@ $conn = new mysqli($host,$user,$pass,$db);
 else
 {
 
+$key = input($_POST['key']);
+$key= $conn->real_escape_string($key);
 
 
-$username=input($_POST['username']);
-$password=md5(input($_POST['password']));
 
-$username = $conn->real_escape_string($username);
-$password = $conn->real_escape_string($password); 
-
-
-  $sql ="select username,password,email,verify from prox_login 
-         where binary username='$username' and password='$password'  
-         and verification_code='ok' and verify='yes'";
+  $sql ="select username,email,keyword from prox_login 
+         where keyword='$key'and verification_code='ok' and verify='yes'";
   $result=$conn->query($sql);
   $rows = $result->num_rows;
 
@@ -196,9 +180,8 @@ $password = $conn->real_escape_string($password);
     $sql3="insert log_file (username,ip_addr,path,connect) values('$username','$ip_addr','$path',NOW())";
     $result3=$conn->query($sql3);    
 
-    
+   $finger = substr(str_shuffle(str_repeat("0123456789ABCDEF", 32)), 0, 32);
 
-     $finger = substr(str_shuffle(str_repeat("0123456789ABCDEF", 32)), 0, 32);
     
 /*
 
@@ -228,12 +211,10 @@ $password = $conn->real_escape_string($password);
     //$_SESSION['expire'] = $_SESSION['timestamp'] + (3600);
 
 
-   $_SESSION['login']=$username;
-
-
-
   while ($row=$result->fetch_assoc())
          {
+          $_SESSION['login']=$row['username'];
+          $_SESSION['key']=$row['keyword'];  
           $_SESSION['mail'] = $row['email'];
           }
 
@@ -258,9 +239,9 @@ $password = $conn->real_escape_string($password);
 
 
     $sql5="insert prox_login_error_attempts (ip_addr,browser,username,password) 
-           values('$ip_addr2','$yourbrowser','$username','$password')";
+           values('$ip_addr2','$yourbrowser','$username','$key')";
     $result5=$conn->query($sql5);   
-   echo ("<script>location.href='index.php'</script>");
+   echo ("<script>location.href='one_connection.php'</script>");
 
    } 
 

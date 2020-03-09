@@ -81,8 +81,10 @@ else
 
    $sql = "insert into prox_log_file (username,ip_addr,path,connect) 
            values('$ses_login','$ip_addr','$path',NOW())";
+   
 
    $result = $conn->query($sql);  
+
 
 
 } // end of else connection
@@ -593,13 +595,30 @@ countdown( "countdown", 15, 0 );
              <div class="block-body">
                 <form action="" method="post">
 
-               <div class='form-group' style="width:100%;">
-                  <select class="form-control" id="sel" data-width="100%" name="prox_mode" required>
-                   <option selected disabled> &#9636; Proxior Mode </option>
-                   <option value="mode_on"> Mode On &oplus; </option>
-                   <option value="mode_off"> Mode Off &#8854; </option>
-                 </select>
-                </div> 
+
+            <?php       
+
+               $conn = new mysqli($host,$user,$pass,$db);
+
+
+               $sql_key = "select keyword from prox_login where username = '$ses_login'";
+               $result_key = $conn->query($sql_key);
+
+                while($row_key = $result_key->fetch_assoc())
+                   {
+                $keyword = $row_key['keyword'];
+                     }
+
+ 
+                echo"<div class='form-group' style='width:100%;'>
+                    <select class='form-control' id='sel' data-width='100%' name='keyword' required>
+                     <option selected disabled> &#9911; Your Keyword </option>
+                     <option slected disabled> Keep it well &#9888; </option>
+                     <option value='$keyword'> $keyword </option>
+                   </select>
+                 </div> ";
+
+             ?>
 
 
                <div class="form-group">       
@@ -626,7 +645,7 @@ countdown( "countdown", 15, 0 );
 
                <div class='form-group' style="width:100%;">
                   <select class="form-control" id="sel" data-width="100%" name="prox_firewall" required>
-                   <option selected disabled> &#9636; Firewall </option>
+                   <option selected disabled> &#9762; Firewall </option>
                    <option value="server_clear"> Very Low  </option>
                    <option value="server_clear"> Low  </option>
                    <option value="server_clear"> Middle  </option>
@@ -735,9 +754,9 @@ countdown( "countdown", 15, 0 );
 if (isset($_POST['submit_pass']))
      {
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
 //require('__ROOT__/class_cn.php');
 require('__DEV__/function.php');
