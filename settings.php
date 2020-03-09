@@ -622,8 +622,8 @@ countdown( "countdown", 15, 0 );
 
 
                <div class="form-group">       
-                 <button type="submit" name="submit_mode" class="btn btn-primary btn-block">
-                  Change Mode &nbsp; <i class="fa fa-power-off"></i>
+                 <button type="submit" name="submit_mode" class="btn btn-primary btn-block" disabled>
+                  Your Key &nbsp; <i class="fa fa-key"></i>
                  </button>
               </div>
 
@@ -657,7 +657,7 @@ countdown( "countdown", 15, 0 );
 
                <div class="form-group">       
                  <button type="submit" name="submit_firewall" class="btn btn-primary btn-block">
-                  Change Level &nbsp; <i class="fa fa-level-up"></i>
+                  Change Level &nbsp; <i class="fa fa-fire"></i>
                  </button>
               </div>
 
